@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "anywr-1b4d6": {
+      "hosting": {
+        "anywrAngular": [
+          "anywr-1b4d6"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "anywr-1b4d6"
+  }
+}
