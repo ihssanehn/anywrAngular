@@ -1,6 +1,6 @@
 <main>
     <form [formGroup]="form">
-        <h1>Enter with your account</h1>
+        <h1>Create your account</h1>
         <mat-form-field>
             <mat-label>Email</mat-label>
             <input type="email" matInput placeholder="Ex: pat@example.com" formControlName="email">
@@ -18,14 +18,23 @@
                 Password is required
             </mat-error>
         </mat-form-field>
-        <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="login()"
-            *ngIf="!isLoggingIn" test-id="login-button">
-            LOGIN
+        <mat-form-field>
+            <mat-label>Confirm Password</mat-label>
+            <input type="password" matInput placeholder="Password" formControlName="confirmPassword">
+            <mat-error *ngIf="form.get('confirmPassword')!.hasError('required')">
+                Password confirmation is required
+            </mat-error>
+            <mat-error *ngIf="form.get('confirmPassword')!.hasError('confirmedValidator')">
+                Password confirmation is not equal to password
+            </mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="register()"
+            *ngIf="!isRegistering">
+            REGISTER
         </button>
-        <button mat-raised-button color="primary" class="button-loader" *ngIf="isLoggingIn"
-            test-id="login-loader">
+        <button mat-raised-button color="primary" class="button-loader" *ngIf="isRegistering">
             <mat-spinner color="accent" diameter="20"></mat-spinner>
         </button>
-        <button mat-stroked-button color="primary" routerLink="/auth/register">REGISTER</button>
+        <button mat-stroked-button color="primary" routerLink="/auth/signin">LOGIN</button>
     </form>
 </main>

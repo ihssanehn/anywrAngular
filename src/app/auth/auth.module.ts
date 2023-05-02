@@ -9,11 +9,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../services/auth.service';
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
   declarations: [
-    SigninComponent
+    SigninComponent,
+    RegisterComponent
   ],
   imports: [
     CommonModule,
