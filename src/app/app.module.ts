@@ -17,10 +17,11 @@ import { AuthService } from './services/auth.service';
   ],
   imports: [
     BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule
+   
   ],
   providers: [AuthGuard, 
     AuthService],

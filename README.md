@@ -1,3 +1,10 @@
+# RESOURCES
+
+copilot
+https://firebase.google.com/doc
+https://material.angular.io/components/categories
+
+
 # AnywrAngular
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.6.
