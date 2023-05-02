@@ -40,7 +40,7 @@ export class SigninComponent implements OnInit{
       next: () => this.router.navigate(['home']),
       error: error  => {
         this.isLoggingIn = false
-        this.snackBar.open(error.message, "OK", {
+        this.snackBar.open(error.message, "Some Error", {
           duration: 5000
         })
       }

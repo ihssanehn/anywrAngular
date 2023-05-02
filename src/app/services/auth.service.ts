@@ -23,4 +23,14 @@ export class AuthService {
       )
     );
   }
+
+  signUp(params: SignIn): Observable<any> {
+    return from(this.auth.createUserWithEmailAndPassword(
+      params.email, params.password
+    )).pipe(
+      catchError((error: FirebaseError) => 
+        throwError(() => new Error(translateFirebaseErrorMessage(error)))
+      )
+    );
+  }
 }

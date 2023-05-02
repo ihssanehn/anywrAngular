@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { ConfirmedValidator } from 'src/app/providers/confirmed.validator';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -15,6 +17,8 @@ export class RegisterComponent implements OnInit{
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private snackBar: MatSnackBar,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -29,9 +33,18 @@ export class RegisterComponent implements OnInit{
 
   register() {
     this.isRegistering = true;
-    setTimeout(() => {
-      this.isRegistering = false;
-    }, 5000);
+    this.authService.signUp({
+      email: this.form.value.email,
+      password: this.form.value.password
+    }).subscribe({
+      next: () => this.router.navigate(['home']),
+      error: error  => {
+        this.isRegistering = false
+        this.snackBar.open(error.message, "Some Error", {
+          duration: 5000
+        })
+      }
+    });
   }
 
 }
