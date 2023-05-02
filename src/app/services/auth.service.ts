@@ -18,8 +18,18 @@ import jwt_decode from "jwt-decode";
 })
 export class AuthService {
   private readonly tokenName = 'anywr_token';
+  userData: any;
 
-  constructor(private auth: AngularFireAuth) {}
+  constructor(private auth: AngularFireAuth) {
+    this.auth.authState.subscribe((user) => {
+      if (user) {
+        this.userData = user;
+        localStorage.setItem('user', JSON.stringify(this.userData));
+      } else {
+        localStorage.removeItem('user')
+      }
+    });
+  }
 
   signIn(params: SignIn): Observable<any> {
     return from(
@@ -64,19 +74,53 @@ export class AuthService {
     );
   }
 
-  async isLoggedIn() {
-    const token = this.getToken();
+  updateProfile(params: any): Observable<any> {
+    return from(this.auth.currentUser).pipe(
+      first(),
+      switchMap((user) => {
+        if (!user) {
+          return throwError(() => new Error('User not found'));
+        }else{
+          return from(user.updateProfile(params)).pipe(first());
+        }
+      }),
+      catchError((error: FirebaseError) =>
+        throwError(() => error))
+    );
+  }
 
+  updateEmail(email: string): Observable<any> {
+    return from(this.auth.currentUser).pipe(
+      first(),
+      switchMap((user) => {
+        if (!user) {
+          return throwError(() => new Error('User not found'));
+        }else{
+          return from(user.updateEmail(email)).pipe(first());
+        }
+      }),
+      catchError((error: FirebaseError) =>
+      throwError(() => error))
+    );
+  }
+  get currentUserObservable(): Observable<any> {
+    return this.auth.authState.pipe(first());
+  }
+  get isLoggedIn() : boolean {
+    const token = this.getToken();
     if (!token) {
       return false;
     }
     const decodeToken : any = jwt_decode(token);
-    // get exp time and check if token is expired
     const expTime = decodeToken?.exp * 1000;
     const now = new Date().getTime();
     return now < expTime;
   }
 
+  signOut() {
+    this.deleteToken();
+    return from(this.auth.signOut()).pipe(first());
+  }
   getToken() {
     return localStorage.getItem(this.tokenName);
   }

@@ -7,10 +7,9 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
-  styleUrls: ['./signin.component.scss']
+  styleUrls: ['./signin.component.scss'],
 })
-export class SigninComponent implements OnInit{
-
+export class SigninComponent implements OnInit {
   form!: FormGroup;
   isLoggingIn = false;
 
@@ -19,34 +18,36 @@ export class SigninComponent implements OnInit{
     private router: Router,
     private authService: AuthService,
     private snackBar: MatSnackBar
-  ) { }
-  
+  ) {}
+
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      email: ['a@a.com', [Validators.required, Validators.email]],
-      password: ['123456', [Validators.required]]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
     });
   }
-
 
   login() {
     this.isLoggingIn = true;
 
-
-    this.authService.signIn({
-      email: this.form.value.email,
-      password: this.form.value.password
-    }).subscribe({
-      next: () => this.router.navigate(['home']),
-      error: error  => {
-        this.isLoggingIn = false
-        this.snackBar.open(error.message, "Some Error", {
-          duration: 5000
-        })
-      }
-    });
+    this.authService
+      .signIn({
+        email: this.form.value.email,
+        password: this.form.value.password,
+      })
+      .subscribe({
+        next: () => {
+          this.router.navigate(['home']),
+            this.snackBar.open('Welcome', '😀', {
+              duration: 5000,
+              });
+        },
+        error: (error) => {
+          this.isLoggingIn = false;
+          this.snackBar.open(error.message, 'OK', {
+            duration: 5000,
+          });
+        },
+      });
   }
-
-
-
 }

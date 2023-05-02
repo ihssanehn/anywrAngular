@@ -1,1 +1,52 @@
-<p>home works!</p>
+<mat-toolbar color="primary">
+  <span>ANYWR ANGULAR APP</span>
+  <span class="spacer"></span>
+  <button mat-raised-button color="warn" (click)="logout()">LOGOUT</button>
+</mat-toolbar>
+<main>
+  <form [formGroup]="form">
+    <h1>Profile</h1>
+    <mat-form-field>
+      <mat-label>Display name</mat-label>
+      <input
+        type="text"
+        matInput
+        placeholder="Display Name"
+        formControlName="displayName"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input
+        type="email"
+        matInput
+        placeholder="Ex: pat@example.com"
+        formControlName="email"
+      />
+      <mat-error *ngIf="form.get('email')!.hasError('required')">
+        Email is required
+      </mat-error>
+      <mat-error *ngIf="form.get('email')!.hasError('email')">
+        Email is invalid
+      </mat-error>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!form.valid"
+      (click)="updateProfile()"
+      *ngIf="!isUpdating"
+    >
+      SAVE
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      class="button-loader"
+      *ngIf="isUpdating"
+      test-id="login-loader"
+    >
+      <mat-spinner color="accent" diameter="20"></mat-spinner>
+    </button>
+  </form>
+</main>

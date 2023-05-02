@@ -41,14 +41,18 @@ export class RegisterComponent implements OnInit {
         password: this.form.value.password,
       })
       .subscribe({
-        next: () => this.router.navigate(['home']),
+        next: () => {
+          this.router.navigate(['home']);
+          this.snackBar.open('Welcome', '😀', {
+            duration: 5000,
+          });
+        },
         error: (error) => {
           this.isRegistering = false;
-          this.snackBar.open(error.message, 'Some Error', {
+          this.snackBar.open(error.message, 'OK', {
             duration: 5000,
           });
         },
       });
   }
-
 }

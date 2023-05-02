@@ -28,7 +28,6 @@ import { RegisterComponent } from './register/register.component';
     MatSnackBarModule
   ],
   providers: [
-    AuthService
   ]
 })
 export class AuthModule { }
