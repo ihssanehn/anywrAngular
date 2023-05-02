@@ -48,8 +48,15 @@ export class AuthService {
       this.auth.createUserWithEmailAndPassword(params.email, params.password)
     ).pipe(
       first(),
-      map((data) => {
-        console.log('data', data);
+      switchMap((data) => {
+        if(!data.user) return throwError(() => new Error('User not found'));
+        return from(data.user!.getIdToken()).pipe(
+          first(),
+          map((token) => {
+            this.setToken(token);
+            return data;
+          })
+        );
       }),
       catchError((error: FirebaseError) =>
         throwError(() => new Error(translateFirebaseErrorMessage(error)))
